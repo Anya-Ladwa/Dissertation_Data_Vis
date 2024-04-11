@@ -1,0 +1,57 @@
+# Creating the first grouped bar chart. 
+# Install and load the required libraries
+install.packages("ggplot2")
+# Load necessary library
+library(ggplot2)
+
+# Define the dataset
+data <- data.frame(
+  Group = c("Placebo", "Testosterone", "Placebo", "Testosterone"),
+  Condition = c("Low Dominance", "Low Dominance", "High Dominance", "High Dominance"),
+  Value = c(0.2, 0.2, 0.1, 0.4)
+)
+
+# Create the grouped bar chart with error bars
+p <- ggplot(data, aes(x = Condition, y = Value, fill = Group)) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.7) +
+  geom_errorbar(aes(ymin = Value - 0.05, ymax = Value + 0.05),
+                position = position_dodge(0.7), width = 0.25) + # Adjust the width of the error bars as needed
+  labs(title = "Cortisol Production Relevant to Dominance",
+       x = "Condition", y = "Mean Cortisol AUC", fill = "Group") +
+  theme_minimal() + # Customize the theme if needed
+  scale_fill_manual(values = c("Placebo" = "orange", "Testosterone" = "lightgreen")) + # Customize fill colors
+  theme(legend.position = "bottom") # Adjust legend position
+
+# Print the plot
+print(p)
+
+
+# Creating a clustered bar chart to show gender differences in co-occurring psychiatric disorders.
+
+#Load required libraries
+library(ggplot2)
+library(tidyr)
+
+# Creating a data frame.
+GDCPD <- data.frame(
+  Gender = c('Males','Females'),
+  None = c(71.4, 50),
+  One = c(25, 25),
+  Two = c(3.6, 25)
+)
+
+# Melting data into long format
+data_long <- GDCPD %>%
+  gather(key = 'Number of Diagnoses', value = 'Percentage', -Gender)
+
+
+# Create the clustered bar chart
+ggplot(data_long, aes(x = `Number of Diagnoses`, y = Percentage, fill = Gender)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(
+    title = "Gender Differences in Co-Occurring Psychiatric Disorders Reported via the MINI",
+    x = "Number of Diagnoses",
+    y = "Percentage (%)"
+  ) +
+  scale_fill_manual(values = c("Males" = "lightblue", "Females" = "lightpink")) + # Different colors for each gender
+  theme_minimal()
